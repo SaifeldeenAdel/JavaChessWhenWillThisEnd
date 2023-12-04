@@ -1,0 +1,12 @@
+Undo Move:
+- Just add a moveHistory stack to our ChessGame and an undo method, storing board states because moves will take way too long
+
+Design Pattern ideas:
+- PieceFactory - returns an object of a Piece based on the given parameter
+    Usage in Board
+        --> pieceFactory(PieceType.PAWN) return Pawn
+- PieceMoveCommand - has execute and undo move methods
+    Usage in ChessGame
+        --> inside move, we can just create a MoveCommand object passing the square to and from and the board, then calling its execute method.
+        --> helps in encapsulating the move implementation in ChessGame and moving it to another class
+
