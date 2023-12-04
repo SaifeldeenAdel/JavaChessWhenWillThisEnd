@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Board implements Cloneable{
     private Square[][] squares = new Square[Constants.BOARD_HEIGHT][Constants.BOARD_WIDTH];
+    private PieceFactory pieceFactory;
     private ArrayList<Square> lastMove = null;
     private Square enpassantSquare;
 
@@ -43,29 +44,30 @@ public class Board implements Cloneable{
     }
 
     public void initialisePieces(){
+        pieceFactory = new PieceFactory();
         for(int i = 0; i< Constants.BOARD_WIDTH; i++){
-            squares[1][i].setPiece(new Pawn(this, squares[1][i], Color.WHITE));
-            squares[6][i].setPiece(new Pawn(this, squares[6][i], Color.BLACK));
+            squares[1][i].setPiece(pieceFactory.createPiece(PieceType.PAWN, this, squares[1][i], Color.WHITE));
+            squares[6][i].setPiece(pieceFactory.createPiece(PieceType.PAWN, this, squares[6][i], Color.BLACK));
         }
         // White Pieces
-        squares[0][0].setPiece(new Rook(this, squares[0][0], Color.WHITE));
-        squares[0][1].setPiece(new Knight(this, squares[0][1], Color.WHITE));
-        squares[0][2].setPiece(new Bishop(this, squares[0][2], Color.WHITE));
-        squares[0][3].setPiece(new Queen(this, squares[0][3], Color.WHITE));
-        squares[0][4].setPiece(new King(this, squares[0][4], Color.WHITE));
-        squares[0][5].setPiece(new Bishop(this, squares[0][5], Color.WHITE));
-        squares[0][6].setPiece(new Knight(this, squares[0][6], Color.WHITE));
-        squares[0][7].setPiece(new Rook(this, squares[0][7], Color.WHITE));
+        squares[0][0].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[0][0], Color.WHITE));
+        squares[0][1].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[0][1], Color.WHITE));
+        squares[0][2].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[0][2], Color.WHITE));
+        squares[0][3].setPiece(pieceFactory.createPiece(PieceType.QUEEN, this, squares[0][3], Color.WHITE));
+        squares[0][4].setPiece(pieceFactory.createPiece(PieceType.KING, this, squares[0][4], Color.WHITE));
+        squares[0][5].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[0][5], Color.WHITE));
+        squares[0][6].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[0][6], Color.WHITE));
+        squares[0][7].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[0][7], Color.WHITE));
 
         // Black Pieces
-        squares[7][0].setPiece(new Rook(this, squares[7][0], Color.BLACK));
-        squares[7][1].setPiece(new Knight(this, squares[7][1], Color.BLACK));
-        squares[7][2].setPiece(new Bishop(this, squares[7][2], Color.BLACK));
-        squares[7][3].setPiece(new Queen(this, squares[7][3], Color.BLACK));
-        squares[7][4].setPiece(new King(this, squares[7][4], Color.BLACK));
-        squares[7][5].setPiece(new Bishop(this, squares[7][5], Color.BLACK));
-        squares[7][6].setPiece(new Knight(this, squares[7][6], Color.BLACK));
-        squares[7][7].setPiece(new Rook(this, squares[7][7], Color.BLACK));
+        squares[7][0].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[7][0], Color.BLACK));
+        squares[7][1].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[7][1], Color.BLACK));
+        squares[7][2].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[7][2], Color.BLACK));
+        squares[7][3].setPiece(pieceFactory.createPiece(PieceType.QUEEN, this, squares[7][3], Color.BLACK));
+        squares[7][4].setPiece(pieceFactory.createPiece(PieceType.KING, this, squares[7][4], Color.BLACK));
+        squares[7][5].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[7][5], Color.BLACK));
+        squares[7][6].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[7][6], Color.BLACK));
+        squares[7][7].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[7][7], Color.BLACK));
 
     }
 
