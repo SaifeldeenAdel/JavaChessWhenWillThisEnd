@@ -178,7 +178,12 @@ public class ChessGame {
     }
 
     public void undo(){
-        setBoard(boardStates.pop());
+        if (boardStates.isEmpty()){
+            return;
+        } else {
+            playerTurn = playerTurn == Color.WHITE ?  Color.BLACK : Color.WHITE;
+            setBoard(boardStates.pop());
+        }
     }
 
     public void switchTurns(){
