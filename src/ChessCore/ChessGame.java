@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Stack;
 
 public class ChessGame {
     private Board board;
@@ -13,12 +14,14 @@ public class ChessGame {
     private Color playerTurn;
     private boolean gameEnded;
     private GameStatus gameStatus;
+    private Stack<Board> boardStates;
 
     public ChessGame(){
         board = new Board();
         playerTurn = Color.WHITE;
         gameEnded = false;
         gameStatus = GameStatus.IN_PROGRESS;
+        boardStates = new Stack<>();
     }
 
     public Board getBoard() {
@@ -171,6 +174,7 @@ public class ChessGame {
                 System.out.println("Invalid move");
                 return false;
             }else {
+                boardStates.push(board.clone());
                 board.performMove(squareFrom, squareTo, toPromote, true);
                 switchTurns();
 
@@ -210,12 +214,20 @@ public class ChessGame {
         return true;
     }
 
+    public void undo(){
+        setBoard(boardStates.pop());
+    }
+
     public void switchTurns(){
         this.playerTurn = this.playerTurn == Color.WHITE ? Color.BLACK : Color.WHITE;
     }
 
     public void setGameEnded(boolean gameEnded) {
         this.gameEnded = gameEnded;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public void display(){
@@ -254,5 +266,7 @@ public class ChessGame {
     public static void main(String[] args) {
         ChessGame game = new ChessGame();
         game.playFromFile("ChessGame.txt");
+        game.display();
+//        game.playFromFile("ChessGame.txt");
     }
 }
