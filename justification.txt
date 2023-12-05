@@ -1,0 +1,8 @@
+Factory Design Pattern:
+    - Allowed us to abstract the piece creation logic in our Chess game so that we can have a consistent way of generating
+    diverse pieces while also encapsulating their instantiation details.
+    - We explored other patterns and thought they were not as suitable for this such as Abstract Factory Pattern,
+    it was not suitable as we did not have multiple families of related objects, we just had one family (Piece) that has subclasses.
+
+Command Design Pattern:
+
