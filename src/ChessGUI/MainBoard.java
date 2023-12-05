@@ -2,15 +2,17 @@ package ChessGUI;
 
 import ChessCore.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class MainBoard extends JFrame {
     private ChessGame game;
+    private JPanel gamePanel;
     private JPanel boardPanel;
+   // private JButton undoButton;
     private Color[][] tileColors = new Color[8][8];
     private int[] squareFrom = new int[2];
     private int[] squareTo = new int[2];
@@ -20,14 +22,40 @@ public class MainBoard extends JFrame {
 
     public MainBoard() {
         game = new ChessGame();
+        gamePanel = new JPanel(new BorderLayout());
         // Creating the main panel of the whole board and setting an 8x8 grid inside it
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH));
 
+        //creating Undo button
+//        undoButton = new JButton("UNDO");
+//        undoButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                game.undo();
+//            }
+//        });
+
+        // Undo using left button on keyboard
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent pressedKey) {
+               if(pressedKey.getKeyCode()==KeyEvent.VK_LEFT){
+                   game.undo();
+               }
+            }
+        });
+        JLabel undoLabel = new JLabel("Undo by pressing the ← key on your keyboard");
+        Font undoLabelFont = new Font("Monospace", Font.BOLD,14);
+        undoLabel.setFont(undoLabelFont);
+        undoLabel.setHorizontalAlignment(JLabel.CENTER);
+
         // Filling in the board panel then adding it to our frame
         initialiseSquares();
-        add(boardPanel, BorderLayout.CENTER);
-
+        gamePanel.add(boardPanel,BorderLayout.CENTER);
+        gamePanel.add(undoLabel,BorderLayout.SOUTH);
+        //add(boardPanel, BorderLayout.CENTER);
+        add(gamePanel);
         // Setting the dimensions of our main window.
         this.setTitle("8139 & 8277's Chess");
         this.setSize(800,800);
@@ -127,7 +155,6 @@ public class MainBoard extends JFrame {
                     } else if (promotingTo == 3){
                         game.move(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], PieceType.BISHOP);
                     }
-
                     showGameStatus();
                     flipBoard();
                     highlightKingInCheck();
@@ -138,6 +165,11 @@ public class MainBoard extends JFrame {
 
         }
 
+    }
+    private void setUndoButtonAction(KeyEvent pressedKey){
+        if(pressedKey.getKeyCode() == KeyEvent.VK_LEFT){
+            game.undo();
+        }
     }
     public void showValidMoves(Square square){
         ArrayList<Square> validMoves = game.getAllValidMovesFromSquare(square);
