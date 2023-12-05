@@ -5,4 +5,8 @@ Factory Design Pattern:
     it was not suitable as we did not have multiple families of related objects, we just had one family (Piece) that has subclasses.
 
 Command Design Pattern:
+    - Allows us to separate movement execution into its own interface, abstracting the move implementation from the ChessGame class.
+     The Game solely creates and executes a command, leaving the execution logic to the command implementation itself.
+    - It also helped minimise the ChessGame class, making it easier to read and manage.
+
 

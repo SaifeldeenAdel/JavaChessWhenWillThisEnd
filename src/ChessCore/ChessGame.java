@@ -48,6 +48,14 @@ public class ChessGame {
         return playerTurn;
     }
 
+    public Stack<Board> getBoardStates() {
+        return boardStates;
+    }
+
+    public void addNewState(Board board) {
+        this.boardStates.push(board);
+    }
+
     public boolean isValidMove(Square squareFrom, Square squareTo){
         // Clones and simulates the legals moves to check whether the king will be in check after or not
         Board clonedBoard = this.board.clone();
@@ -160,58 +168,13 @@ public class ChessGame {
         return false;
     }
 
-    public boolean move(int fileFrom, int rankFrom, int fileTo, int rankTo, PieceType toPromote){
+    public MoveCommand createMoveCommand(int fileFrom, int rankFrom, int fileTo, int rankTo, PieceType toPromote) {
         Square squareFrom;
         Square squareTo;
-        try{
-            squareFrom = this.board.getSquare(rankFrom, fileFrom);
-            squareTo = this.board.getSquare(rankTo, fileTo);
-            // Checks if there any valid moves from the current square or if the destination square is not in the valid moves
-            if (this.getAllValidMovesFromSquare(squareFrom).isEmpty() || !this.getAllValidMovesFromSquare(squareFrom).contains(squareTo)){
-                System.out.println("Invalid move");
-                return false;
-            } else if ((rankTo == 7  || rankTo == 0) && squareFrom.getPiece() instanceof Pawn && toPromote == null){
-                System.out.println("Invalid move");
-                return false;
-            }else {
-                boardStates.push(board.clone());
-                board.performMove(squareFrom, squareTo, toPromote, true);
-                switchTurns();
+        squareFrom = this.board.getSquare(rankFrom, fileFrom);
+        squareTo = this.board.getSquare(rankTo, fileTo);
+        return new MoveCommand(this, this.getBoard(), squareFrom, squareTo, toPromote);
 
-                if (this.insufficientMaterial(board)){
-                    System.out.println("Insufficient Material");
-                    setGameStatus(GameStatus.INSUFFICIENT_MATERIAL);
-                    setGameEnded(true);
-                    return true;
-                }
-                if (this.kingIsInCheck(board)){
-                    setKingInCheckSquare(playerTurn == Color.WHITE ? getBoard().getWhiteKing() : getBoard().getBlackKing());
-                    if (this.isCheckMate(board)) {
-                        // TODO
-                        System.out.println((playerTurn == Color.WHITE ? Color.BLACK : Color.WHITE) + " won");
-                        setGameEnded(true);
-                        setGameStatus(playerTurn == Color.WHITE ? GameStatus.BLACK_WON: GameStatus.WHITE_WON);
-                    } else {
-                        // TODO
-                        System.out.println(playerTurn + " in check");
-                        setGameStatus(playerTurn == Color.WHITE ? GameStatus.WHITE_IN_CHECK: GameStatus.BLACK_IN_CHECK);
-                    }
-                    return true;
-                } else {
-                    if (this.isStaleMate(board)) {
-                        System.out.println("Stalemate");
-                        setGameEnded(true);
-                        setGameStatus(GameStatus.STALEMATE);
-                        return true;
-                    }
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Invalid move");
-            return false;
-        }
-        setGameStatus(GameStatus.IN_PROGRESS);
-        return true;
     }
 
     public void undo(){
@@ -234,39 +197,9 @@ public class ChessGame {
         this.board.displayBoard();
     }
 
-    public void playFromFile(String filename){
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String line;
-            int counter = 1;
-            while((line = reader.readLine()) != null){
-                if(gameEnded){
-                    System.out.println("Game already ended");
-                    break;
-                } else {
-                    String[] moves = line.split(",");
-                    int fileFrom = (int)moves[0].charAt(0) - 97;
-                    int rankFrom = (int)moves[0].charAt(1) - 49;
-                    int fileTo = (int)moves[1].charAt(0) - 97;
-                    int rankTo = (int)moves[1].charAt(1) - 49;
-
-                    if (moves.length == 2){
-                        this.move(fileFrom, rankFrom, fileTo, rankTo, null);
-                    } else if (moves.length == 3) {
-                        this.move(fileFrom, rankFrom, fileTo, rankTo, PieceType.getType(moves[2].charAt(0)));
-                    }
-                }
-                System.out.println(getGameStatus());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void main(String[] args) {
         ChessGame game = new ChessGame();
-        game.playFromFile("ChessGame.txt");
-        game.display();
 //        game.playFromFile("ChessGame.txt");
+        game.display();
     }
 }
