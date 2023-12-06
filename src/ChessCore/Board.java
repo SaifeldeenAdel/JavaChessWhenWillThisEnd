@@ -190,7 +190,7 @@ public class Board implements Cloneable{
         return squareFrom.file - squareTo.file > 1;
     }
     public boolean isPromotionMove(Square squareFrom, Square squareTo){
-        if (squareFrom.getPiece() instanceof Pawn && ((Pawn)squareFrom.getPiece()).isPromoting(squareFrom,squareTo)){
+        if (squareFrom.getPiece() instanceof Pawn && ((Pawn)squareFrom.getPiece()).isPromoting(squareFrom,squareTo) && squareFrom.getPiece().isValidMove(squareFrom, squareTo)){
             return true;
         }
         return false;
