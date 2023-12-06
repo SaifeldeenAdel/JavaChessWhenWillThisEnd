@@ -27,22 +27,11 @@ public class MainBoard extends JFrame {
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH));
 
-        //creating Undo button
-//        undoButton = new JButton("UNDO");
-//        undoButton.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                game.undo();
-//            }
-//        });
-
         // Undo using left button on keyboard
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent pressedKey) {
-               if(pressedKey.getKeyCode()==KeyEvent.VK_LEFT){
-                   game.undo();
-               }
+              setUndoButtonAction(pressedKey);
             }
         });
         JLabel undoLabel = new JLabel("Undo by pressing the ← key on your keyboard");
