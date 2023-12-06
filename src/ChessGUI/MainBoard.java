@@ -2,7 +2,6 @@ package ChessGUI;
 
 import ChessCore.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.event.*;
@@ -158,11 +157,18 @@ public class MainBoard extends JFrame {
         }
 
     }
+
     private void setUndoButtonAction(KeyEvent pressedKey){
         if(pressedKey.getKeyCode() == KeyEvent.VK_LEFT){
             game.undo();
+            flipBoard();
+            highlightKingInCheck();
+            setPieces();
+            resetColors();
+            setFrom = false;
         }
     }
+
     public void showValidMoves(Square square){
         ArrayList<Square> validMoves = game.getAllValidMovesFromSquare(square);
         Component[] components = boardPanel.getComponents();
