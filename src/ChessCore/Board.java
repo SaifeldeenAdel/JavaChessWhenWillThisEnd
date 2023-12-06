@@ -141,13 +141,13 @@ public class Board implements Cloneable{
             // Normal movement
             squareFrom.removePiece();
             if(toPromote == PieceType.QUEEN){
-                movingPiece = new Queen(this, squareTo, movingPiece.getColor());
+                movingPiece = pieceFactory.createPiece(PieceType.QUEEN, this, squareTo, movingPiece.getColor());
             } else if (toPromote == PieceType.KNIGHT){
-                movingPiece = new Knight(this, squareTo, movingPiece.getColor());
+                movingPiece = pieceFactory.createPiece(PieceType.KNIGHT, this, squareTo, movingPiece.getColor());
             }else if (toPromote == PieceType.ROOK){
-                movingPiece = new Rook(this, squareTo, movingPiece.getColor());
+                movingPiece = pieceFactory.createPiece(PieceType.ROOK, this, squareTo, movingPiece.getColor());
             }else if (toPromote == PieceType.BISHOP){
-                movingPiece = new Bishop(this, squareTo, movingPiece.getColor());
+                movingPiece = pieceFactory.createPiece(PieceType.BISHOP, this, squareTo, movingPiece.getColor());
             }
             squareTo.setPiece(movingPiece);
 
@@ -190,7 +190,7 @@ public class Board implements Cloneable{
         return squareFrom.file - squareTo.file > 1;
     }
     public boolean isPromotionMove(Square squareFrom, Square squareTo){
-        if (squareFrom.getPiece() instanceof Pawn && ((Pawn)squareFrom.getPiece()).isPromoting(squareFrom,squareTo)){
+        if (squareFrom.getPiece() instanceof Pawn && ((Pawn)squareFrom.getPiece()).isPromoting(squareFrom,squareTo) && squareFrom.getPiece().isValidMove(squareFrom, squareTo)){
             return true;
         }
         return false;

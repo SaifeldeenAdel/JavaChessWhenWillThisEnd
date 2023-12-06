@@ -12,7 +12,6 @@ public class MainBoard extends JFrame {
     private ChessGame game;
     private JPanel gamePanel;
     private JPanel boardPanel;
-   // private JButton undoButton;
     private Color[][] tileColors = new Color[8][8];
     private int[] squareFrom = new int[2];
     private int[] squareTo = new int[2];
@@ -117,18 +116,20 @@ public class MainBoard extends JFrame {
                 squareTo[0] = file;
                 squareTo[1] = rank;
 
+                MoveCommand moveCommand = game.createMoveCommand(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], null);
                 if(!game.getBoard().isPromotionMove(game.getBoard().getSquare(squareFrom[1],squareFrom[0]),game.getBoard().getSquare(squareTo[1],squareTo[0]))){
-                    if (!game.move(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], null)) {
+                    if (!moveCommand.execute()){
                         squareFrom[0] = file;
                         squareFrom[1] = rank;
                         setFrom = true;
                     }else{
-                            showGameStatus();
-                            flipBoard();
-                            highlightKingInCheck();
-                            setPieces();
-                            setFrom = false;
+                        showGameStatus();
+                        flipBoard();
+                        highlightKingInCheck();
+                        setPieces();
+                        setFrom = false;
                     }
+
                 }
                 else {
                     String[] options = { "Queen", "Knight", "Rook", "Bishop" };
@@ -136,14 +137,16 @@ public class MainBoard extends JFrame {
                             0, 3, null, options, options[0]);
 
                     if (promotingTo == 0){
-                        game.move(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], PieceType.QUEEN);
+                        moveCommand.setToPromote(PieceType.QUEEN);
                     } else if (promotingTo == 1){
-                        game.move(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], PieceType.KNIGHT);
+                        moveCommand.setToPromote(PieceType.KNIGHT);
                     } else if (promotingTo == 2){
-                        game.move(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], PieceType.ROOK);
+                        moveCommand.setToPromote(PieceType.ROOK);
                     } else if (promotingTo == 3){
-                        game.move(squareFrom[0], squareFrom[1], squareTo[0],squareTo[1], PieceType.BISHOP);
+                        moveCommand.setToPromote(PieceType.BISHOP);
                     }
+
+                    moveCommand.execute();
                     showGameStatus();
                     flipBoard();
                     highlightKingInCheck();
