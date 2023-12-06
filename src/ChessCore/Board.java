@@ -44,30 +44,30 @@ public class Board implements Cloneable{
     }
 
     public void initialisePieces(){
-        pieceFactory = new PieceFactory();
+        pieceFactory = new PieceFactory(this);
         for(int i = 0; i< Constants.BOARD_WIDTH; i++){
-            squares[1][i].setPiece(pieceFactory.createPiece(PieceType.PAWN, this, squares[1][i], Color.WHITE));
-            squares[6][i].setPiece(pieceFactory.createPiece(PieceType.PAWN, this, squares[6][i], Color.BLACK));
+            squares[1][i].setPiece(pieceFactory.createWhitePiece(PieceType.PAWN, squares[1][i]));
+            squares[6][i].setPiece(pieceFactory.createBlackPiece(PieceType.PAWN, squares[6][i]));
         }
         // White Pieces
-        squares[0][0].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[0][0], Color.WHITE));
-        squares[0][1].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[0][1], Color.WHITE));
-        squares[0][2].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[0][2], Color.WHITE));
-        squares[0][3].setPiece(pieceFactory.createPiece(PieceType.QUEEN, this, squares[0][3], Color.WHITE));
-        squares[0][4].setPiece(pieceFactory.createPiece(PieceType.KING, this, squares[0][4], Color.WHITE));
-        squares[0][5].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[0][5], Color.WHITE));
-        squares[0][6].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[0][6], Color.WHITE));
-        squares[0][7].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[0][7], Color.WHITE));
+        squares[0][0].setPiece(pieceFactory.createWhitePiece(PieceType.ROOK, squares[0][0]));
+        squares[0][1].setPiece(pieceFactory.createWhitePiece(PieceType.KNIGHT, squares[0][1]));
+        squares[0][2].setPiece(pieceFactory.createWhitePiece(PieceType.BISHOP, squares[0][2]));
+        squares[0][3].setPiece(pieceFactory.createWhitePiece(PieceType.QUEEN, squares[0][3]));
+        squares[0][4].setPiece(pieceFactory.createWhitePiece(PieceType.KING, squares[0][4]));
+        squares[0][5].setPiece(pieceFactory.createWhitePiece(PieceType.BISHOP, squares[0][5]));
+        squares[0][6].setPiece(pieceFactory.createWhitePiece(PieceType.KNIGHT, squares[0][6]));
+        squares[0][7].setPiece(pieceFactory.createWhitePiece(PieceType.ROOK, squares[0][7]));
 
         // Black Pieces
-        squares[7][0].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[7][0], Color.BLACK));
-        squares[7][1].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[7][1], Color.BLACK));
-        squares[7][2].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[7][2], Color.BLACK));
-        squares[7][3].setPiece(pieceFactory.createPiece(PieceType.QUEEN, this, squares[7][3], Color.BLACK));
-        squares[7][4].setPiece(pieceFactory.createPiece(PieceType.KING, this, squares[7][4], Color.BLACK));
-        squares[7][5].setPiece(pieceFactory.createPiece(PieceType.BISHOP, this, squares[7][5], Color.BLACK));
-        squares[7][6].setPiece(pieceFactory.createPiece(PieceType.KNIGHT, this, squares[7][6], Color.BLACK));
-        squares[7][7].setPiece(pieceFactory.createPiece(PieceType.ROOK, this, squares[7][7], Color.BLACK));
+        squares[7][0].setPiece(pieceFactory.createBlackPiece(PieceType.ROOK, squares[7][0]));
+        squares[7][1].setPiece(pieceFactory.createBlackPiece(PieceType.KNIGHT, squares[7][1]));
+        squares[7][2].setPiece(pieceFactory.createBlackPiece(PieceType.BISHOP, squares[7][2]));
+        squares[7][3].setPiece(pieceFactory.createBlackPiece(PieceType.QUEEN, squares[7][3]));
+        squares[7][4].setPiece(pieceFactory.createBlackPiece(PieceType.KING, squares[7][4]));
+        squares[7][5].setPiece(pieceFactory.createBlackPiece(PieceType.BISHOP, squares[7][5]));
+        squares[7][6].setPiece(pieceFactory.createBlackPiece(PieceType.KNIGHT, squares[7][6]));
+        squares[7][7].setPiece(pieceFactory.createBlackPiece(PieceType.ROOK, squares[7][7]));
 
     }
 
@@ -140,14 +140,10 @@ public class Board implements Cloneable{
         } else if (movingPiece instanceof Pawn && ((Pawn)movingPiece).isPromoting(squareFrom,squareTo)) {
             // Normal movement
             squareFrom.removePiece();
-            if(toPromote == PieceType.QUEEN){
-                movingPiece = pieceFactory.createPiece(PieceType.QUEEN, this, squareTo, movingPiece.getColor());
-            } else if (toPromote == PieceType.KNIGHT){
-                movingPiece = pieceFactory.createPiece(PieceType.KNIGHT, this, squareTo, movingPiece.getColor());
-            }else if (toPromote == PieceType.ROOK){
-                movingPiece = pieceFactory.createPiece(PieceType.ROOK, this, squareTo, movingPiece.getColor());
-            }else if (toPromote == PieceType.BISHOP){
-                movingPiece = pieceFactory.createPiece(PieceType.BISHOP, this, squareTo, movingPiece.getColor());
+            if (movingPiece.getColor() == Color.WHITE){
+                movingPiece = pieceFactory.createWhitePiece(toPromote, squareTo);
+            } else {
+                movingPiece = pieceFactory.createBlackPiece(toPromote, squareTo);
             }
             squareTo.setPiece(movingPiece);
 
