@@ -1,9 +1,13 @@
 package ChessCore;
 
+import MoveValidators.KingMoveValidator;
+
 public class King extends Piece {
     private boolean hasMoved;
+
     public King(Board board, Square square, Color color) {
         super(board, square, color, PieceType.KING);
+        setValidator(new KingMoveValidator(this));
         hasMoved = false;
     }
 
@@ -11,31 +15,8 @@ public class King extends Piece {
         this.hasMoved = true;
     }
 
-    @Override
-    public boolean isValidMove(Square squareFrom, Square squareTo) {
-        if (!super.isValidMove(squareFrom, squareTo)){
-            return false;
-        }
-        int horizontal = Math.abs(squareTo.file - squareFrom.file);
-        int vertical = Math.abs(squareTo.rank - squareFrom.rank);
-
-        int deltaX = squareTo.file - squareFrom.file;
-
-        // Checking if it's a castling move
-        if(!hasMoved && (deltaX == 2 || deltaX == 3) && vertical == 0 && canShortCastle()){
-            return true;
-        }
-
-        if(!hasMoved && (deltaX == -2 || deltaX == -3 || deltaX == -4) && vertical == 0 && canLongCastle()){
-            return true;
-        }
-
-        // Check if the move is within the king's range (one square in any direction)
-        if ((horizontal <= 1 && vertical <= 1) && (horizontal + vertical > 0)) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isHasMoved() {
+        return hasMoved;
     }
 
     public boolean canShortCastle(){

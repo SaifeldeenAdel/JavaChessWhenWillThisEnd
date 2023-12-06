@@ -1,5 +1,7 @@
 package ChessCore;
 
+import MoveValidators.MoveValidator;
+
 import java.util.ArrayList;
 
 public abstract class Piece implements Cloneable{
@@ -8,6 +10,7 @@ public abstract class Piece implements Cloneable{
     private Color color;
     private PieceType type;
     private boolean available;
+    private MoveValidator validator;
 
     public Piece(Board board, Square square, Color color, PieceType type){
         this.board = board;
@@ -15,6 +18,14 @@ public abstract class Piece implements Cloneable{
         this.color = color;
         this.type = type;
         this.available = true;
+    }
+
+    public void setValidator(MoveValidator validator) {
+        this.validator = validator;
+    }
+
+    public MoveValidator getValidator() {
+        return validator;
     }
 
     public Piece clone(Board clonedBoard, Square clonedSquare){
@@ -34,6 +45,9 @@ public abstract class Piece implements Cloneable{
         if(Square.outOfBounds(squareTo.rank, squareTo.file)){
             return false;
         }
+        if (squareFrom.getPiece() == null){
+            return false;
+        }
         // Makes sure the destination square doesn't have a piece at all or doesn't have a piece that has the same color
         if (squareTo.getPiece() != null){
             Piece piece = squareTo.getPiece();
@@ -44,10 +58,8 @@ public abstract class Piece implements Cloneable{
                 return false;
             }
         }
-        return true;
+        return this.validator.validate(squareFrom, squareTo);
     }
-
-
 
     public ArrayList<Square> getAllLegalMoves() {
         ArrayList<Square> legalMoves = new ArrayList<>();
