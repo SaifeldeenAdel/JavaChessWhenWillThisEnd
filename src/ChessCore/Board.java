@@ -1,5 +1,7 @@
 package ChessCore;
 
+import MoveValidators.PawnMoveValidator;
+
 import java.util.ArrayList;
 
 public class Board implements Cloneable{
@@ -126,7 +128,7 @@ public class Board implements Cloneable{
 
                 if (isFinal) System.out.println("Castle") ;
             }
-        } else if(movingPiece instanceof Pawn && ((Pawn)movingPiece).enpassantValid(squareFrom, squareTo)) {
+        } else if(movingPiece instanceof Pawn && ((PawnMoveValidator)movingPiece.getValidator()).enpassantValid(squareFrom, squareTo)) {
             // Enpassant Movement
             squareFrom.removePiece();
             squareTo.setPiece(movingPiece);
@@ -147,13 +149,6 @@ public class Board implements Cloneable{
             }
             squareTo.setPiece(movingPiece);
 
-        }
-        else if (movingPiece instanceof Pawn && ((Pawn) movingPiece).canPromote(squareFrom,squareTo) ) {
-            if (toPromote != null) {
-                System.out.println("working?");
-                ((Pawn) movingPiece).promoteTo(squareTo,toPromote);
-                squareFrom.removePiece();
-            }
         }
         else {
             // Normal movement
