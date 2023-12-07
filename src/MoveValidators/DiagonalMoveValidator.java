@@ -1,4 +1,5 @@
 package MoveValidators;
+import ChessCore.Board;
 import ChessCore.Piece;
 import ChessCore.Square;
 
@@ -7,6 +8,11 @@ public class DiagonalMoveValidator implements MoveValidator {
     public DiagonalMoveValidator(Piece piece){
         this.piece = piece;
     }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
     @Override
     public boolean validate(Square squareFrom, Square squareTo) {
         if (Math.abs(squareFrom.file - squareTo.file) == Math.abs(squareTo.rank - squareFrom.rank)) {
@@ -15,8 +21,9 @@ public class DiagonalMoveValidator implements MoveValidator {
                 for (int i = 1; i < Math.abs(squareTo.file - squareFrom.file); i++) {
                     // Checking all squares to the destination square to make sure no piece is blocking, if so, return false.
                     if (!Square.outOfBounds(squareFrom.rank + i, squareFrom.file + i)) {
-                        if (piece.getBoard().getSquare(squareFrom.rank + i, squareFrom.file + i).getPiece() != null)
+                        if (piece.getBoard().getSquare(squareFrom.rank + i, squareFrom.file + i).getPiece() != null){
                             return false;
+                        }
                     }
                 }
                 return true;
@@ -25,7 +32,9 @@ public class DiagonalMoveValidator implements MoveValidator {
                 for (int i = 1; i < Math.abs(squareTo.file - squareFrom.file); i++) {
                     // Checking all squares to the destination square to make sure no piece is blocking, if so, return false.
                     if (!Square.outOfBounds(squareFrom.rank - i, squareFrom.file + i)){
-                        if (piece.getBoard().getSquare(squareFrom.rank - i, squareFrom.file + i).getPiece() != null) return false;
+                        if (piece.getBoard().getSquare(squareFrom.rank - i, squareFrom.file + i).getPiece() != null) {
+                            return false;
+                        }
                     }
                 }
                 return true;
@@ -35,7 +44,9 @@ public class DiagonalMoveValidator implements MoveValidator {
                 for (int i = 1; i < Math.abs(squareTo.file - squareFrom.file); i++) {
                     // Checking all squares to the destination square to make sure no piece is blocking, if so, return false.
                     if (!Square.outOfBounds(squareFrom.rank - i, squareFrom.file - i)){
-                        if (piece.getBoard().getSquare(squareFrom.rank - i, squareFrom.file - i).getPiece() != null) return false;
+                        if (piece.getBoard().getSquare(squareFrom.rank - i, squareFrom.file - i).getPiece() != null) {
+                            return false;
+                        }
                     }
                 }
                 return true;
@@ -57,4 +68,19 @@ public class DiagonalMoveValidator implements MoveValidator {
         }
         return false;
     }
+
+    @Override
+    public MoveValidator clone(Piece piece) {
+        // Return a cloned instance with the new associated piece
+
+        try {
+            DiagonalMoveValidator cloned = (DiagonalMoveValidator) super.clone();
+            cloned.setPiece(piece);
+            return cloned;
+
+        } catch (CloneNotSupportedException e){
+            return null;
+        }
+    }
+
 }

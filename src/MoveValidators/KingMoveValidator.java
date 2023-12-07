@@ -10,6 +10,10 @@ public class KingMoveValidator implements MoveValidator {
         this.piece = piece;
     }
 
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
     @Override
     public boolean validate(Square squareFrom, Square squareTo) {
         int horizontal = Math.abs(squareTo.file - squareFrom.file);
@@ -31,6 +35,18 @@ public class KingMoveValidator implements MoveValidator {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public MoveValidator clone(Piece piece) {
+        try {
+            KingMoveValidator cloned = (KingMoveValidator) super.clone();
+            cloned.setPiece(piece);
+            return cloned;
+
+        } catch (CloneNotSupportedException e){
+            return null;
         }
     }
 }

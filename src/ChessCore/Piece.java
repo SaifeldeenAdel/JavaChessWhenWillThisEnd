@@ -33,6 +33,7 @@ public abstract class Piece implements Cloneable{
             Piece clonedPiece = (Piece)super.clone();
             clonedPiece.square = clonedSquare;
             clonedPiece.board = clonedBoard;
+            clonedPiece.setValidator(this.validator.clone(clonedPiece));
             return clonedPiece;
 
         } catch (CloneNotSupportedException e){
@@ -51,9 +52,6 @@ public abstract class Piece implements Cloneable{
         // Makes sure the destination square doesn't have a piece at all or doesn't have a piece that has the same color
         if (squareTo.getPiece() != null){
             Piece piece = squareTo.getPiece();
-            if (this instanceof King && piece instanceof Rook && (((King)this).canShortCastle() || ((King)this).canLongCastle())){
-                return true;
-            }
             if ((piece.isWhite() && this.isWhite()) || (!piece.isWhite() && !this.isWhite())){
                 return false;
             }

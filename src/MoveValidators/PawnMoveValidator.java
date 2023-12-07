@@ -9,6 +9,10 @@ public class PawnMoveValidator implements MoveValidator {
         this.piece = piece;
     }
 
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
     @Override
     public boolean validate(Square squareFrom, Square squareTo) {
         int horizontal = Math.abs(squareFrom.file - squareTo.file);
@@ -91,5 +95,17 @@ public class PawnMoveValidator implements MoveValidator {
             }
         }
         return false;
+    }
+
+    @Override
+    public MoveValidator clone(Piece piece) {
+        try {
+            PawnMoveValidator cloned = (PawnMoveValidator) super.clone();
+            cloned.setPiece(piece);
+            return cloned;
+
+        } catch (CloneNotSupportedException e){
+            return null;
+        }
     }
 }
