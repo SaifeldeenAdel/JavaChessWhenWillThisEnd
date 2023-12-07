@@ -180,6 +180,7 @@ public class Board implements Cloneable{
     public boolean isLongCastleMove(Square squareFrom, Square squareTo){
         return squareFrom.file - squareTo.file > 1;
     }
+    //isValidMove here
     public boolean isPromotionMove(Square squareFrom, Square squareTo){
         if (squareFrom.getPiece() instanceof Pawn && ((Pawn)squareFrom.getPiece()).isPromoting(squareFrom,squareTo) && squareFrom.getPiece().isValidMove(squareFrom, squareTo)){
             return true;

@@ -11,7 +11,8 @@ public class KnightMoveValidator implements MoveValidator{
 
     @Override
     public boolean validate(Square squareFrom, Square squareTo) {
-        // TODO - take code from isValidMove in Knight and place here, then remove the whole method from over there
-        return false;
+        // Mathematical condition to check if the next square forms an L shape with current square
+        return Math.abs((squareTo.file - squareFrom.file) * (squareTo.rank - squareFrom.rank)) == 2;
     }
+    
 }
