@@ -9,4 +9,20 @@ Design Pattern ideas:
     Usage in ChessGame
         --> inside move, we can just create a MoveCommand object passing the square to and from and the board, then calling its execute method.
         --> helps in encapsulating the move implementation in ChessGame and moving it to another class
+------
+* IDEAS:
+- GameStatus - has subclasses of each status
+    Usage in MoveCommand and MainBoard
+        --> setGameStatus(Game game) return string
+        --> only changes enum type to abstract and implements gameStatus method in each subclass
+    Implements: State Pattern
+
+- ALREADY USED(?): Prototype pattern
+    Creating a clone of the board object using the Object class' clone method and using that cloned object
+    in methods independent to the original object used.
+
+
+
+
+
 

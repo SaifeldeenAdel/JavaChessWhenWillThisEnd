@@ -11,4 +11,7 @@ Command Design Pattern:
      The Game solely creates and executes a command, leaving the execution logic to the command implementation itself.
     - It also helped minimise the ChessGame class, making it easier to read and manage.
 
-
+Strategy Design Pattern:
+    - Allowed the breaking down the validation checks for each piece's movement and group together common movements.
+    - Each piece class only calls a method that sets the piece for a validation check according to its type, abstracting the
+      implementation of each piece's movement checks.
